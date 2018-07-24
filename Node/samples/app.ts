@@ -15,11 +15,11 @@ import * as teams from 'botbuilder-teams';
 import { SimpleFBAuth, IFacebookAppSigninSettings } from './simpleFBAuth';
 
 // Put your registered bot here, to register bot, go to bot framework
-var appName: string = 'app name';
-var appId: string = 'app id';
-var appPassword: string = 'app password';
-var userId: string = 'user id';
-var tenantId: string = 'tenant id';
+var appName: string = 'Mopo Bot';
+var appId: string = 'ce1b3ec0-8bb9-46ed-a4f5-f5e6a3da1dd1';
+var appPassword: string = 'unZC0nvvbzUGWBT9825@+?=';
+var userId: string = '6c4445f6-a23d-473c-951d-7474d289c6b3';
+var tenantId: string = 'dc368399-474c-4d40-900c-6265431fd81f';
 
 // Create chat bot 
 var connector = new teams.TeamsChatConnector({     
