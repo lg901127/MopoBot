@@ -40,36 +40,40 @@ module.exports.setup = function(app) {
                     session.send('Delete user');
                     break;
                 case 3: 
-                    bot.dialog('policiesAssignDialog', [
-                      function (session) {
-                        session.beginDialog('askName');
-                      },
-
-                      function (session, results) {
-                        switch(results.response) {
-                          case 'Arabic Test': 
-                            session.endDialog('Assigned Policies: Messaging Policy - Teams Messaging Policy 1520270091696, Meeting policy - RestrictedAnonymousAccess');
-                          default: 
-                            session.endDialog('We cannot find any assigned policies for the specified user');
-                        }
-                      }
-                    ]);
-
-                    bot.dialog('askName', [
-                      function (session) {
-                        builder.Prompts.text(session, 'Please enter the user name');
-                      }, 
-
-                      function (session, results) {
-                        session.endDialogWithResult(results);
-                      }
-                    ]);
+                    session.beginDialog('policiesAssignDialog');
+                    break;
                 default:
                     session.send('default');
                     break;
             }
         }
-    ])
+    ]);
+
+    bot.dialog('policiesAssignDialog', [
+      function (session) {
+        session.beginDialog('askName');
+      },
+
+      function (session, results) {
+        switch(results.response) {
+          case 'Arabic Test': 
+            session.endDialog('Assigned Policies: Messaging Policy - Teams Messaging Policy 1520270091696, Meeting policy - RestrictedAnonymousAccess');
+            break;
+          default: 
+            session.endDialog('We cannot find any assigned policies for the specified user');
+        }
+      }
+    ]);
+
+    bot.dialog('askName', [
+      function (session) {
+        builder.Prompts.text(session, 'Please enter the user name');
+      }, 
+
+      function (session, results) {
+        session.endDialogWithResult(results);
+      }
+    ]);
 
     // Setup an endpoint on the router for the bot to listen.
     // NOTE: This endpoint cannot be changed and must be api/messages
