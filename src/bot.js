@@ -26,7 +26,7 @@ module.exports.setup = function(app) {
     // bot.use(stripBotAtMentions);
     bot.dialog('/', [
         function(session) {
-            builder.Prompts.choice(session, 'Pick your choice', ['List all users', 'Add user', 'Delete user']);
+            builder.Prompts.choice(session, 'Pick your choice', ['List all users', 'Add user', 'Delete user', 'Get Policies Assigned To Users']);
         },
         function(session, results) {
             switch (results.response.index) {
@@ -39,6 +39,31 @@ module.exports.setup = function(app) {
                 case 2:
                     session.send('Delete user');
                     break;
+                case 3: 
+                    bot.dialog('policiesAssignDialog', [
+                      function (session) {
+                        session.beginDialog('askName');
+                      },
+
+                      function (session, results) {
+                        switch(results.response) {
+                          case 'Arabic Test': 
+                            session.endDialog('Assigned Policies: Messaging Policy - Teams Messaging Policy 1520270091696, Meeting policy - RestrictedAnonymousAccess');
+                          default: 
+                            session.endDialog('We cannot find any assigned policies for the specified user');
+                        }
+                      }
+                    ]);
+
+                    bot.dialog('askName', [
+                      function (session) {
+                        builder.Prompts.text(session, 'Please enter the user name');
+                      }, 
+
+                      function (session, results) {
+                        session.endDialogWithResult(results);
+                      }
+                    ]);
                 default:
                     session.send('default');
                     break;
