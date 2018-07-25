@@ -16,11 +16,35 @@ module.exports.setup = function(app) {
     });
     
     // Define a simple bot with the above connector that echoes what it received
-    var bot = new builder.UniversalBot(connector, function(session) {
-        // Message might contain @mentions which we would like to strip off in the response
-        var text = teams.TeamsMessage.getTextWithoutMentions(session.message);
-        session.send('You said: %s', text);
-    });
+    // var bot = new builder.UniversalBot(connector, function(session) {
+    //     // Message might contain @mentions which we would like to strip off in the response
+    //     var text = teams.TeamsMessage.getTextWithoutMentions(session.message);
+    //     session.send('You said: %s', text);
+    // });
+    var bot = new builder.UniversalBot(connector);
+    // var stripBotAtMentions = new teams.StripBotAtMentions();
+    // bot.use(stripBotAtMentions);
+    bot.dialog('/', [
+        function(session) {
+            builder.Prompts.choice(session, 'Pick your choice', ['List all users', 'Add user', 'Delete user']);
+        },
+        function(session, results) {
+            switch (results.response.index) {
+                case 0:
+                    session.send('List users');
+                    break;
+                case 1:
+                    session.send('Add user');
+                    break;
+                case 2:
+                    session.send('Delete user');
+                    break;
+                default:
+                    session.send('default');
+                    break;
+            }
+        }
+    ])
 
     // Setup an endpoint on the router for the bot to listen.
     // NOTE: This endpoint cannot be changed and must be api/messages
